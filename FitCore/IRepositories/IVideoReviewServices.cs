@@ -12,5 +12,9 @@ namespace FitCore.IRepositories
     {
         Task<VideoReviewResponse> AddVideoReview(NewVideoReview model, string userId);
         Task<VideoReviewResponse> EditVideoReview(EditVideoReview model, string userId, int videoId);
+        Task<VideoReviewResponse> DeleteVideoReview(string userId, int videoId);
+        Task<VideoReviewResponseFullData> GetVideoReviewById(int Reviewid);
+        Task<VideoReviewResponseFullData> GetVideoReviewById(int Reviewid,string userId);
+        Task<List<VideoReviewResponseFullData>> GetAllMyVideoReview(string userId);
     }
 }

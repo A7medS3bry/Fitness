@@ -1,5 +1,6 @@
 ﻿using FitCore.Dto.VideoReview;
 using FitCore.IRepositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -14,6 +15,49 @@ namespace Fit.Controllers
         public VideoReviewController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+        }
+        [HttpGet("Get-My-Videos-Reviews")]
+        public async Task<IActionResult> GetMyVideosReviews()
+        {
+            var userId = User.FindFirstValue("uid");
+            var result = await _unitOfWork.VideoReviewServices.GetAllMyVideoReview(userId);
+
+            if (result is null || !result.Any())
+                return NotFound("No reviews found for this user.");
+
+            return Ok(new
+            {
+                message = "Reviews :",
+                Result = result
+            });
+        }
+        [HttpGet("Get-Video-Reviews-By-Id-Login")]
+        // You Can Use it Without Login
+        public async Task<IActionResult> GetVideoReviewsByIdWithLogin(int ReviewId )
+        {
+            var userId = User.FindFirstValue("uid");
+
+            var result = await _unitOfWork.VideoReviewServices.GetVideoReviewById(ReviewId , userId);
+            if (result == null)
+                return NotFound($"No reviews found With this id = {ReviewId}.");
+            return Ok(new
+            {
+                message = "Review :",
+                Result = result
+            });
+        }
+        [HttpGet("Get-Video-Reviews-By-Id-Wihout-Login")]
+        // You Can Use it Without Login
+        public async Task<IActionResult> GetVideoReviewsById(int ReviewId)
+        {
+            var result = await _unitOfWork.VideoReviewServices.GetVideoReviewById(ReviewId);
+            if (result == null)
+                return NotFound($"No reviews found With this id = {ReviewId}.");
+            return Ok(new
+            {
+                message = "Review :",
+                Result = result
+            });
         }
         [HttpPost("Add-Video-Review")]
         public async Task<IActionResult> AddVideoReview([FromForm]NewVideoReview model)
@@ -45,6 +89,20 @@ namespace Fit.Controllers
             return Ok(new
             {
                 message = "Review updated successfully.",
+                Result = result
+            });
+        }
+
+        [HttpDelete("Delete-Video-Review")]
+        public async Task<IActionResult> DeleteVideoReview(int videoId)
+        {
+            var userId = User.FindFirstValue("uid");
+            var result = await _unitOfWork.VideoReviewServices.DeleteVideoReview(userId, videoId);
+            if (result == null)
+                return NotFound("No existing review found for this video to delete.");
+            return Ok(new
+            {
+                message = "Review deleted successfully.",
                 Result = result
             });
         }
