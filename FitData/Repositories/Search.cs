@@ -1,7 +1,7 @@
-﻿using FitCore.IRepositories;
+﻿using FitCore.Dto.Authentication;
+using FitCore.Dto.Search;
+using FitCore.IRepositories;
 using FitCore.Models;
-using FitCore.Models.Authentication;
-using FitCore.Models.Search;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -21,9 +21,9 @@ namespace FitData.Repositories
         {
             _userManager = userManager;
         }
-        public List<GetUsers> MapUsersToUser(List<ApplicationUser> users)
+        public List<GetTrainee> MapUsersToUser(List<ApplicationUser> users)
         {
-            return users.Select(user => new GetUsers
+            return users.Select(user => new GetTrainee
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
@@ -35,8 +35,18 @@ namespace FitData.Repositories
                 Level = user.LevelId
             }).ToList();
         }
+        public List<GetNutritionistsAndTrainers> MapUsersToTrainerAndNutritionist(List<ApplicationUser> users)
+        {
+            return users.Select(user => new GetNutritionistsAndTrainers
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                ExYreas = user.ExperienceYears
+            }).ToList();
+        }
         // Return null because the user does not exist
-        public async Task<GetUsers> SearchUserById(string id)
+        public async Task<GetTrainee> SearchUserById(string id)
         {
             if (string.IsNullOrEmpty(id))
                 return null;
@@ -49,42 +59,63 @@ namespace FitData.Repositories
 
             return MapUsersToUser(new List<ApplicationUser> { SearchUserById }).FirstOrDefault();
         }
-        public async Task<List<GetUsers>> SearchUserByName(string name)
+        public async Task<List<GetTrainee>> SearchUserByName(string name)
         {
-            if (string.IsNullOrEmpty(name))
-                return new List<GetUsers>();
-
+            if (string.IsNullOrWhiteSpace(name))
+                return new List<GetTrainee>();
 
             var users = await _userManager.Users
-                .Where(u =>
-                    EF.Functions.Like(u.FirstName, $"{name}%") ||
-                    EF.Functions.Like(u.LastName, $"{name}%"))
                 .AsNoTracking()
+                .Where(u => EF.Functions.Like(u.FirstName, $"{name}%") ||
+                            EF.Functions.Like(u.LastName, $"{name}%"))
                 .ToListAsync();
 
-            if (!users.Any())
-                return new List<GetUsers>();
+            var filteredTrainees = new List<ApplicationUser>();
 
-            return MapUsersToUser(users);
+            foreach (var user in users)
+            {
+                if (await _userManager.IsInRoleAsync(user, ApplicationRoles.TraineesRole))
+                    filteredTrainees.Add(user);
+            }
+
+            if(!filteredTrainees.Any())
+                return new List<GetTrainee>();
+
+            return MapUsersToUser(filteredTrainees);
         }
-        public async Task<List<GetUsers>> GetUsersByRoleAsync(string role)
+        public async Task<List<GetTrainee>> GetUsersByRoleAsync(string role)
         {
             if (string.IsNullOrEmpty(role))
-                return new List<GetUsers>();
+                return new List<GetTrainee>();
 
             var users = await _userManager.GetUsersInRoleAsync(role);
             if (users is null || !users.Any())
-                return new List<GetUsers>();
+                return new List<GetTrainee>();
 
             return MapUsersToUser(users.ToList());
         }
-        public Task<List<GetUsers>> GetAllTrainees()
+        public async Task<List<GetNutritionistsAndTrainers>> GetTrainersAndNutritionistByRoleAsync(string role)
         {
-            return GetUsersByRoleAsync("Trainees");
+            if (string.IsNullOrEmpty(role))
+                return new List<GetNutritionistsAndTrainers>();
+
+            var users = await _userManager.GetUsersInRoleAsync(role);
+            if (users is null || !users.Any())
+                return new List<GetNutritionistsAndTrainers>();
+
+            return MapUsersToTrainerAndNutritionist(users.ToList());
         }
-        public Task<List<GetUsers>> GetAllTrainers()
+        public Task<List<GetTrainee>> GetAllTrainees()
         {
-            return GetUsersByRoleAsync("Trainers");
+            return GetUsersByRoleAsync(ApplicationRoles.TraineesRole);
+        }
+        public Task<List<GetNutritionistsAndTrainers>> GetAllTrainers()
+        {
+            return GetTrainersAndNutritionistByRoleAsync(ApplicationRoles.TrainersRole);
+        }
+        public Task<List<GetNutritionistsAndTrainers>> GetAllNutritionist()
+        {
+            return GetTrainersAndNutritionistByRoleAsync(ApplicationRoles.NutritionistsRole);
         }
     }
 }

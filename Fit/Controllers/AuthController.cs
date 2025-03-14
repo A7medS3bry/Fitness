@@ -1,5 +1,5 @@
-﻿using FitCore.IRepositories;
-using FitCore.Models.Authentication;
+﻿using FitCore.Dto.Authentication;
+using FitCore.IRepositories;
 using FitData.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;

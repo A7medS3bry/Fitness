@@ -1,4 +1,4 @@
-﻿using FitCore.Models.Authentication;
+﻿using FitCore.Dto.Authentication;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable

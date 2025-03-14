@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitCore.Models.Admin
+namespace FitCore.Dto.Admin
 {
     public class AddAndEditVideo
     {

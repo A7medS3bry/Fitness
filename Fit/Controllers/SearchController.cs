@@ -33,6 +33,17 @@ namespace Fit.Controllers
 
             return Ok(result);
         }
+        [HttpGet("Get-All-Nutritionist")]
+        public async Task<IActionResult> GetAllNutritionist()
+        {
+            var result = await _unitOfWork.Search.GetAllNutritionist();
+
+            if (result == null || !result.Any())
+                return NotFound("No Trainees Found");
+
+
+            return Ok(result);
+        }
 
         [HttpGet("Get-By-Name")]
         public async Task<IActionResult> GetUserByName(string name)

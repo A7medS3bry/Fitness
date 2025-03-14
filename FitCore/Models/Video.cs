@@ -15,5 +15,8 @@ namespace FitCore.Models
         // public bool IsDelete { get; set; }
         public int LevelId { get; set; }
         public Level level { get; set; }
+
+        // M : M Video and VideoReview
+        public ICollection<VideoReview> VideoReview { get; set; }
     }
 }

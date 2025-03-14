@@ -1,6 +1,7 @@
-﻿using FitCore.IRepositories;
+﻿using FitCore.Dto.Admin;
+using FitCore.Dto.NutritionistAndPlan;
+using FitCore.IRepositories;
 using FitCore.Models;
-using FitCore.Models.Admin;
 using FitData.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -104,5 +105,20 @@ namespace FitData.Repositories
             return true;
         }
 
+        public async Task<List<ViewPlans>> ViewAllPlans()
+        {
+            var Data = await _context.nutritionPlans
+                .Select(b => new ViewPlans
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Details = b.Details,
+                    NutritionistId = b.NutritionistId,
+                    NutritionistName = b.Nutritionist != null ? b.Nutritionist.FirstName + " " + b.Nutritionist.LastName : "",
+                    TraineeId = b.TraineeId,
+                    TraineeName = b.Trainee != null ? b.Trainee.FirstName + " " + b.Trainee.LastName : ""
+                }).AsNoTracking().ToListAsync();
+            return Data;
+        }
     }
 }

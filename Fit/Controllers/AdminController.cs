@@ -1,7 +1,8 @@
 ﻿using Fit.Authorization;
+using FitCore.Dto.Admin;
 using FitCore.IRepositories;
-using FitCore.Models.Admin;
-using FitCore.Models.Authentication;
+using FitCore.Dto.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -80,6 +81,18 @@ namespace Fit.Controllers
 
             return Ok("Video deleted successfully.");
         }
-        
+
+        [HttpGet("Get-=All-Plans")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetPlans()
+        {
+            var result = await _unitOfWork.AdminService.ViewAllPlans();
+
+            if (result is null || !result.Any())
+                return BadRequest("No Plans Find");
+
+            return Ok(result);
+        }
+
     }
 }

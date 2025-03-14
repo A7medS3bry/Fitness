@@ -1,4 +1,3 @@
-using FitCore.Models.Authentication;
 using FitCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +8,7 @@ using System.Text;
 using FitCore.IRepositories;
 using FitData.Repositories;
 using Microsoft.OpenApi.Models;
+using FitCore.Dto.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 

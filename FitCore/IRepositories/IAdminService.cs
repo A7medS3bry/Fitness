@@ -1,4 +1,5 @@
-﻿using FitCore.Models.Admin;
+﻿using FitCore.Dto.Admin;
+using FitCore.Dto.NutritionistAndPlan;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace FitCore.IRepositories
         Task<VideoView> AddVideo(AddAndEditVideo model);
         Task<AddAndEditVideo> EditVideo(AddAndEditVideo model , int id);
         Task<bool> DeleteVideoAsync(int id);
+        Task<List<ViewPlans>> ViewAllPlans();
+
     }
 }

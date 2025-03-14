@@ -34,11 +34,43 @@ namespace FitData.Data
                 .HasForeignKey(p => p.NutritionistId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // M:M Trainee And VideoReview and Video
+            modelBuilder.Entity<VideoReview>()
+                .HasKey(vr => new { vr.VideoId, vr.TraineeId });
+
+            modelBuilder.Entity<VideoReview>()
+                .HasOne(vr => vr.Video)
+                .WithMany(v => v.VideoReview)
+                .HasForeignKey(vr => vr.VideoId);
+            modelBuilder.Entity<VideoReview>()
+                .HasOne(vr => vr.Trainee)
+                .WithMany(t => t.VideoReview)
+                .HasForeignKey(vr => vr.TraineeId);
+
+            modelBuilder.Entity<TraineerReview>()
+                .HasKey(vr => new { vr.TrainerId, vr.TraineeId });
+
+            modelBuilder.Entity<TraineerReview>()
+                .HasOne(vr => vr.Trainee)
+                .WithMany(v => v.GivenReviewsTrainee)
+                .HasForeignKey(vr => vr.TraineeId);
+
+            modelBuilder.Entity<TraineerReview>()
+                .HasOne(vr => vr.Trainer)
+                .WithMany(t => t.ReceivedReviewsTrainer)
+                .HasForeignKey(vr => vr.TrainerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+
+
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Level> Levels { get; set; }
         public DbSet<NutritionPlans> nutritionPlans { get; set; }
         public DbSet<Video> Video { get; set; }
+        //public DbSet<VideoReview> videoReviews { get; set; }
+        //public DbSet<TraineerReview> traineerReviews { get; set; }
     }
 }

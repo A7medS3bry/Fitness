@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitCore.Models.Search
+namespace FitCore.Dto.Search
 {
-    public class GetUsers
+    public class GetTrainee
     {
         public string Id { get; set; }
         public string FirstName { get; set; }

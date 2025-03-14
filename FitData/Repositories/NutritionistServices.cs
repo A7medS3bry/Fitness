@@ -1,7 +1,6 @@
-﻿using FitCore.IRepositories;
+﻿using FitCore.Dto.NutritionistAndPlan;
+using FitCore.IRepositories;
 using FitCore.Models;
-using FitCore.Models.Nutritionist;
-using FitCore.Models.NutritionistAndPlan;
 using FitData.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

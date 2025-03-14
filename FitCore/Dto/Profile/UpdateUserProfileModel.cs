@@ -1,11 +1,11 @@
-﻿using FitCore.Models.Authentication;
+﻿using FitCore.Dto.Authentication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitCore.Models.Profile
+namespace FitCore.Dto.Profile
 {
     public class UpdateUserProfileModel
     {

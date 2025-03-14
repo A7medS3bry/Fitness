@@ -28,5 +28,12 @@ namespace FitCore.Models
 
         // Nutritionist can Create Many Plan
         public ICollection<NutritionPlans> CreatedNutritionPlans { get; set; }
+
+        // M : M Trainer and TrainerReaview
+        public ICollection<TraineerReview> GivenReviewsTrainee { get; set; }
+        public ICollection<TraineerReview> ReceivedReviewsTrainer { get; set; }
+
+        // M : M Trainee and VideoReview
+        public ICollection<VideoReview> VideoReview { get; set; }
     }
 }

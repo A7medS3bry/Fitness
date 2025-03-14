@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitCore.Models.NutritionistAndPlan
+namespace FitCore.Dto.NutritionistAndPlan
 {
-    public class ViewPlansById
+    public class ViewPlans
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -14,6 +15,6 @@ namespace FitCore.Models.NutritionistAndPlan
         public string TraineeId { get; set; }
         public string? TraineeName { get; set; }
         public string NutritionistId { get; set; }
-        public string? NutritionistName { get; set; }
+        public string NutritionistName { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-﻿using FitCore.Models.Authentication;
-using FitCore.Models.Profile;
+﻿using FitCore.Dto.Authentication;
+using FitCore.Dto.Profile;
 using System;
 using System.Collections.Generic;
 using System.Linq;

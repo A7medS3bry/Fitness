@@ -1,4 +1,4 @@
-﻿using FitCore.Models.Authentication;
+﻿using FitCore.Dto.Authentication;
 
 namespace Fit.Authorization
 {

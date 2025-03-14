@@ -1,5 +1,4 @@
 ﻿using FitCore.IRepositories;
-using FitCore.Models.Authentication;
 using FitCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -11,8 +10,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using FitCore.Models.Profile;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using FitCore.Dto.Authentication;
+using FitCore.Dto.Profile;
 
 namespace FitData.Repositories
 {

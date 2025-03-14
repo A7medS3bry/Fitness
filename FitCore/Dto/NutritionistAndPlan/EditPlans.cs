@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitCore.Models.NutritionistAndPlan
+namespace FitCore.Dto.NutritionistAndPlan
 {
     public class EditPlans
     {

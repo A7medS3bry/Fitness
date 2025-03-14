@@ -1,7 +1,7 @@
 ﻿using Fit.Authorization;
+using FitCore.Dto.NutritionistAndPlan;
 using FitCore.IRepositories;
-using FitCore.Models.Authentication;
-using FitCore.Models.NutritionistAndPlan;
+using FitCore.Dto.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +20,7 @@ namespace Fit.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [HttpGet("Get-All-Plans")]
+        [HttpGet("Get-My-Plans")]
         public async Task<IActionResult> GetPlans()
         {
             var userId = User.FindFirstValue("uid");

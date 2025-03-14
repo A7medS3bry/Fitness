@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitCore.Models.Authentication
+namespace FitCore.Dto.Authentication
 {
     public class ApplicationRoles
     {

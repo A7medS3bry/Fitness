@@ -1,5 +1,4 @@
-﻿using FitCore.Models.Nutritionist;
-using FitCore.Models.NutritionistAndPlan;
+﻿using FitCore.Dto.NutritionistAndPlan;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -4,6 +4,7 @@ using FitData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250314050759_AddVideoReviewTable")]
+    partial class AddVideoReviewTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,31 +170,6 @@ namespace FitData.Migrations
                         .IsUnique();
 
                     b.ToTable("nutritionPlans");
-                });
-
-            modelBuilder.Entity("FitCore.Models.TraineerReview", b =>
-                {
-                    b.Property<string>("TrainerId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("TraineeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Review")
-                        .HasColumnType("int");
-
-                    b.HasKey("TrainerId", "TraineeId");
-
-                    b.HasIndex("TraineeId");
-
-                    b.ToTable("TraineerReview");
                 });
 
             modelBuilder.Entity("FitCore.Models.Video", b =>
@@ -406,25 +384,6 @@ namespace FitData.Migrations
                     b.Navigation("Trainee");
                 });
 
-            modelBuilder.Entity("FitCore.Models.TraineerReview", b =>
-                {
-                    b.HasOne("FitCore.Models.ApplicationUser", "Trainee")
-                        .WithMany("GivenReviewsTrainee")
-                        .HasForeignKey("TraineeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FitCore.Models.ApplicationUser", "Trainer")
-                        .WithMany("ReceivedReviewsTrainer")
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Trainee");
-
-                    b.Navigation("Trainer");
-                });
-
             modelBuilder.Entity("FitCore.Models.Video", b =>
                 {
                     b.HasOne("FitCore.Models.Level", "level")
@@ -510,12 +469,8 @@ namespace FitData.Migrations
                 {
                     b.Navigation("CreatedNutritionPlans");
 
-                    b.Navigation("GivenReviewsTrainee");
-
                     b.Navigation("NutritionPlan")
                         .IsRequired();
-
-                    b.Navigation("ReceivedReviewsTrainer");
 
                     b.Navigation("VideoReview");
                 });
