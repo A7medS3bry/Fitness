@@ -36,19 +36,23 @@ namespace FitData.Data
 
             // M:M Trainee And VideoReview and Video
             modelBuilder.Entity<VideoReview>()
-                .HasKey(vr => new { vr.VideoId, vr.TraineeId });
+                .HasIndex(vr => new { vr.VideoId, vr.TraineeId })
+                .IsUnique();
 
             modelBuilder.Entity<VideoReview>()
                 .HasOne(vr => vr.Video)
                 .WithMany(v => v.VideoReview)
                 .HasForeignKey(vr => vr.VideoId);
+
             modelBuilder.Entity<VideoReview>()
                 .HasOne(vr => vr.Trainee)
                 .WithMany(t => t.VideoReview)
                 .HasForeignKey(vr => vr.TraineeId);
 
             modelBuilder.Entity<TraineerReview>()
-                .HasKey(vr => new { vr.TrainerId, vr.TraineeId });
+                .HasIndex(vr => new { vr.TrainerId, vr.TraineeId })
+                .IsUnique();
+
 
             modelBuilder.Entity<TraineerReview>()
                 .HasOne(vr => vr.Trainee)
@@ -64,13 +68,14 @@ namespace FitData.Data
 
 
 
+
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Level> Levels { get; set; }
         public DbSet<NutritionPlans> nutritionPlans { get; set; }
         public DbSet<Video> Video { get; set; }
-        //public DbSet<VideoReview> videoReviews { get; set; }
-        //public DbSet<TraineerReview> traineerReviews { get; set; }
+        public DbSet<VideoReview> VideoReview { get; set; }
+        public DbSet<TraineerReview> TraineerReview { get; set; }
     }
 }

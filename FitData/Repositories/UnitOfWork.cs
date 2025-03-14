@@ -15,17 +15,22 @@ namespace FitData.Repositories
         public ISearch Search { get; set; }
         public INutritionistServices NutritionistServices { get; set; }
         public IAdminService AdminService { get; set; }
+        public IVideoReviewServices VideoReviewServices { get; set; }
+
+
 
         public UnitOfWork(ApplicationDbContext context,
             IAuthServices authServices , ISearch search,
             INutritionistServices nutritionistServices, 
-            IAdminService adminService)
+            IAdminService adminService
+            ,IVideoReviewServices videoReviewServices)
         {
             _context = context;
             AuthServices = authServices;
             Search = search;
             NutritionistServices = nutritionistServices;
             AdminService = adminService;
+            VideoReviewServices = videoReviewServices;  
         }
 
         public int Complete()

@@ -171,25 +171,33 @@ namespace FitData.Migrations
 
             modelBuilder.Entity("FitCore.Models.TraineerReview", b =>
                 {
-                    b.Property<string>("TrainerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<string>("TraineeId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Review")
                         .HasColumnType("int");
 
-                    b.HasKey("TrainerId", "TraineeId");
+                    b.Property<string>("TraineeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TrainerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("TraineeId");
+
+                    b.HasIndex("TrainerId", "TraineeId")
+                        .IsUnique();
 
                     b.ToTable("TraineerReview");
                 });
@@ -222,25 +230,32 @@ namespace FitData.Migrations
 
             modelBuilder.Entity("FitCore.Models.VideoReview", b =>
                 {
-                    b.Property<int>("VideoId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("TraineeId")
-                        .HasColumnType("nvarchar(450)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Id")
-                        .HasColumnType("int");
-
                     b.Property<int>("Review")
                         .HasColumnType("int");
 
-                    b.HasKey("VideoId", "TraineeId");
+                    b.Property<string>("TraineeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("VideoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("TraineeId");
+
+                    b.HasIndex("VideoId", "TraineeId")
+                        .IsUnique();
 
                     b.ToTable("VideoReview");
                 });

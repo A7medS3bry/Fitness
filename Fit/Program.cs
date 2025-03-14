@@ -64,6 +64,7 @@ builder.Services.AddTransient<IAuthServices, AuthServices>();
 builder.Services.AddTransient<ISearch, Search>();
 builder.Services.AddTransient<INutritionistServices, NutritionistServices>();
 builder.Services.AddTransient<IAdminService,AdminService>();
+builder.Services.AddTransient<IVideoReviewServices,VideoReviewServices>();
 
 
 

@@ -12,6 +12,7 @@ namespace FitCore.IRepositories
         ISearch Search { get; }
         INutritionistServices NutritionistServices { get; }
         IAdminService AdminService { get; }
+        IVideoReviewServices VideoReviewServices { get; }
 
         public int Complete();
     }
