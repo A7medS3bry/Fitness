@@ -1,4 +1,5 @@
-﻿using FitCore.IRepositories;
+﻿using Fit.Authorization;
+using FitCore.IRepositories;
 using FitCore.Models.Authentication;
 using FitCore.Models.NutritionistAndPlan;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +11,7 @@ namespace Fit.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = ApplicationRoles.NutritionistsRole)]
+    [NutritionistAuthorizeAttribute]
     public class NutritionistController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -23,11 +24,6 @@ namespace Fit.Controllers
         public async Task<IActionResult> GetPlans()
         {
             var userId = User.FindFirstValue("uid");
-            var IsNutritionistsRole = User.IsInRole(ApplicationRoles.NutritionistsRole);
-
-            if (userId == null) return Unauthorized();
-            if (!IsNutritionistsRole)
-                return Forbid("Access denied. You must be a Nutritionist.");
 
             var result = await _unitOfWork.NutritionistServices.GetMyPlans(userId);
 
@@ -41,7 +37,6 @@ namespace Fit.Controllers
         public async Task<IActionResult> GetPlansById(int id)
         {
             var userId = User.FindFirstValue("uid");
-            if (userId == null) return Unauthorized();
 
             var result = await _unitOfWork.NutritionistServices.GetPlanByIdAsync(userId , id);
 
@@ -55,13 +50,6 @@ namespace Fit.Controllers
         public async Task<IActionResult> EditPlan([FromForm] EditPlans model ,int id)
         {
             var userId = User.FindFirstValue("uid");
-            var IsNutritionistsRole = User.IsInRole(ApplicationRoles.NutritionistsRole);
-
-            if (userId == null) return Unauthorized();
-
-            if (!IsNutritionistsRole) 
-                return Forbid("Access denied. You must be a Nutritionist.");
-
 
             var result = await _unitOfWork.NutritionistServices.EditPlanAsync(userId , model, id);
             if (result == null)
@@ -74,12 +62,6 @@ namespace Fit.Controllers
         public async Task<IActionResult> DeletePlan([FromForm]int id)
         {
             var userId = User.FindFirstValue("uid");
-            var IsNutritionistsRole = User.IsInRole(ApplicationRoles.NutritionistsRole);
-
-            if (userId == null) return Unauthorized();
-
-            if (!IsNutritionistsRole)
-                return Forbid("Access denied. You must be a Nutritionist.");
 
             var result = await _unitOfWork.NutritionistServices.DeleteAsync(userId , id);
             if (!result)
