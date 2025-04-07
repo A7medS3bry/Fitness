@@ -24,7 +24,7 @@ namespace FitCore.Models
         public Level? level { get; set; }
 
         // Nutritionplan one trainee has one plan
-        public NutritionPlans NutritionPlan { get; set; }
+        public ICollection<NutritionPlans> NutritionPlans { get; set; }
 
         // Nutritionist can Create Many Plan
         public ICollection<NutritionPlans> CreatedNutritionPlans { get; set; }
@@ -35,5 +35,8 @@ namespace FitCore.Models
 
         // M : M Trainee and VideoReview
         public ICollection<VideoReview> VideoReview { get; set; }
+
+        // 1 : M Trainee and Video
+        public ICollection<Video> Videos { get; set; }
     }
 }

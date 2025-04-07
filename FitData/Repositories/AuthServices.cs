@@ -215,5 +215,8 @@ namespace FitData.Repositories
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
             return result.Succeeded;
         }
+
+
+
     }
 }

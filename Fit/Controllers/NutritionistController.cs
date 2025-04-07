@@ -19,6 +19,19 @@ namespace Fit.Controllers
         {
             _unitOfWork = unitOfWork;
         }
+        [HttpPost("Create-Plan")]
+        public async Task<IActionResult> CreatePlan([FromForm] AddPlan model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            var userId = User.FindFirstValue("uid");
+            var result = await _unitOfWork.NutritionistServices.CreatePlanAsync(model, userId);
+            if (result == null)
+                return BadRequest("Failed to create plan.");
+            return Ok(result);
+        
+        }
 
         [HttpGet("Get-My-Plans")]
         public async Task<IActionResult> GetPlans()
@@ -46,7 +59,8 @@ namespace Fit.Controllers
             return Ok(result);
 
         }
-        [HttpPost("Edit-Plan")]
+
+        [HttpPut("Edit-Plan")]
         public async Task<IActionResult> EditPlan([FromForm] EditPlans model ,int id)
         {
             var userId = User.FindFirstValue("uid");
@@ -58,7 +72,7 @@ namespace Fit.Controllers
             return Ok(result);
         }
 
-        [HttpPost("Delete-Plan")]
+        [HttpPut("Delete-Plan")]
         public async Task<IActionResult> DeletePlan([FromForm]int id)
         {
             var userId = User.FindFirstValue("uid");
@@ -69,6 +83,19 @@ namespace Fit.Controllers
 
             return Ok($"Plan With ID: {id} Deleted");
 
+        }
+
+
+        [HttpGet("Get-All-Plans-Admin")]
+        [AdminAuthorize]
+        public async Task<IActionResult> GetAllUserPlans()
+        {
+            var result = await _unitOfWork.NutritionistServices.ViewAllPlans();
+
+            if (result is null || !result.Any())
+                return BadRequest("No Plans Find");
+
+            return Ok(result);
         }
     }
 }

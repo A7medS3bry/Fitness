@@ -1,4 +1,5 @@
-﻿using FitCore.Dto.VideoReview;
+﻿using Fit.Authorization;
+using FitCore.Dto.VideoReview;
 using FitCore.IRepositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -9,8 +10,9 @@ namespace Fit.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoReviewController : ControllerBase
-    {
+        [TraineeAuthorize]
+        public class VideoReviewController : ControllerBase
+        {
         private readonly IUnitOfWork _unitOfWork;
         public VideoReviewController(IUnitOfWork unitOfWork)
         {
@@ -31,8 +33,8 @@ namespace Fit.Controllers
                 Result = result
             });
         }
+
         [HttpGet("Get-Video-Reviews-By-Id-Login")]
-        // You Can Use it Without Login
         public async Task<IActionResult> GetVideoReviewsByIdWithLogin(int ReviewId )
         {
             var userId = User.FindFirstValue("uid");
@@ -46,8 +48,10 @@ namespace Fit.Controllers
                 Result = result
             });
         }
-        [HttpGet("Get-Video-Reviews-By-Id-Wihout-Login")]
+
         // You Can Use it Without Login
+        [HttpGet("Get-Video-Reviews-By-Id-Wihout-Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetVideoReviewsById(int ReviewId)
         {
             var result = await _unitOfWork.VideoReviewServices.GetVideoReviewById(ReviewId);
@@ -59,6 +63,7 @@ namespace Fit.Controllers
                 Result = result
             });
         }
+
         [HttpPost("Add-Video-Review")]
         public async Task<IActionResult> AddVideoReview([FromForm]NewVideoReview model)
         {

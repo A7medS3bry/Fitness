@@ -4,6 +4,7 @@ using FitData.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitData.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250404212729_AddMealTypeTable")]
+    partial class AddMealTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,23 +118,6 @@ namespace FitData.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("FitCore.Models.ExerciseType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ExerciseType");
-                });
-
             modelBuilder.Entity("FitCore.Models.Level", b =>
                 {
                     b.Property<int>("Id")
@@ -202,7 +188,8 @@ namespace FitData.Migrations
 
                     b.HasIndex("NutritionistId");
 
-                    b.HasIndex("TraineeId");
+                    b.HasIndex("TraineeId")
+                        .IsUnique();
 
                     b.ToTable("nutritionPlans");
                 });
@@ -248,9 +235,6 @@ namespace FitData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ExerciseTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
@@ -267,8 +251,6 @@ namespace FitData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ExerciseTypeId");
 
                     b.HasIndex("LevelId");
 
@@ -464,8 +446,8 @@ namespace FitData.Migrations
                         .IsRequired();
 
                     b.HasOne("FitCore.Models.ApplicationUser", "Trainee")
-                        .WithMany("NutritionPlans")
-                        .HasForeignKey("TraineeId")
+                        .WithOne("NutritionPlan")
+                        .HasForeignKey("FitCore.Models.NutritionPlans", "TraineeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -497,12 +479,6 @@ namespace FitData.Migrations
 
             modelBuilder.Entity("FitCore.Models.Video", b =>
                 {
-                    b.HasOne("FitCore.Models.ExerciseType", "ExerciseType")
-                        .WithMany("Videos")
-                        .HasForeignKey("ExerciseTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("FitCore.Models.Level", "level")
                         .WithMany("videos")
                         .HasForeignKey("LevelId")
@@ -514,8 +490,6 @@ namespace FitData.Migrations
                         .HasForeignKey("TrainnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("ExerciseType");
 
                     b.Navigation("Trainner");
 
@@ -598,17 +572,13 @@ namespace FitData.Migrations
 
                     b.Navigation("GivenReviewsTrainee");
 
-                    b.Navigation("NutritionPlans");
+                    b.Navigation("NutritionPlan")
+                        .IsRequired();
 
                     b.Navigation("ReceivedReviewsTrainer");
 
                     b.Navigation("VideoReview");
 
-                    b.Navigation("Videos");
-                });
-
-            modelBuilder.Entity("FitCore.Models.ExerciseType", b =>
-                {
                     b.Navigation("Videos");
                 });
 

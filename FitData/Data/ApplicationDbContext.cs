@@ -20,12 +20,13 @@ namespace FitData.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            // 1:1 Trainee And NutritionPlan
+            // 1:M Trainee And NutritionPlans
             modelBuilder.Entity<ApplicationUser>()
-                .HasOne(a => a.NutritionPlan)
+                .HasMany(a => a.NutritionPlans)
                 .WithOne(p => p.Trainee)
-                .HasForeignKey<NutritionPlans>(p => p.TraineeId)
+                .HasForeignKey(p => p.TraineeId)
                 .OnDelete(DeleteBehavior.Restrict);
+
 
             // 1:M Nutritionist And CreatedNutritionPlans
             modelBuilder.Entity<ApplicationUser>()

@@ -24,5 +24,9 @@ namespace FitCore.Models
         public string NutritionistId { get; set; }
         public ApplicationUser Nutritionist { get; set; }
 
+        [ForeignKey("mealType")]
+        public int? MealTypeId { get; set; }
+        public MealType mealType { get; set; }
+
     }
 }

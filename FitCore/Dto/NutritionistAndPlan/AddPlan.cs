@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace FitCore.Dto.NutritionistAndPlan
 {
-    public class EditPlans
+    public class AddPlan
     {
         public string Name { get; set; }
         public string Details { get; set; }
         public int? MealTypeId { get; set; }
+        public string TraineeId { get; set; }
 
     }
 }
