@@ -20,6 +20,21 @@ namespace FitData.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
+            // SignalR
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(m => m.Sender)
+                .WithMany() 
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ChatMessage>()
+                .HasOne(m => m.Receiver)
+                .WithMany() 
+                .HasForeignKey(m => m.ReceiverId)
+                .OnDelete(DeleteBehavior.Restrict);
+            //End SignalR
+
             // 1:M Trainee And NutritionPlans
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(a => a.NutritionPlans)
@@ -78,5 +93,6 @@ namespace FitData.Data
         public DbSet<Video> Video { get; set; }
         public DbSet<VideoReview> VideoReview { get; set; }
         public DbSet<TraineerReview> TraineerReview { get; set; }
+        public DbSet<ChatMessage> ChatMessages { get; set; }
     }
 }

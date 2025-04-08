@@ -9,15 +9,21 @@ using FitCore.IRepositories;
 using FitData.Repositories;
 using Microsoft.OpenApi.Models;
 using FitCore.Dto.Authentication;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+// SignalR
+builder.Services.AddSignalR();
+// End SignalR
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 
 
 // ------------------------------------------------------------------
@@ -55,6 +61,22 @@ builder.Services.AddAuthentication(
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
 
             };
+            // SignalR 
+            op.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+                    var path = context.HttpContext.Request.Path;
+
+                    if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/chatHub"))
+                    {
+                        context.Token = accessToken;
+                    }
+                    return Task.CompletedTask;
+                }
+            };
+            // End SignalR
         }
 
     );
@@ -65,6 +87,7 @@ builder.Services.AddTransient<ISearch, Search>();
 builder.Services.AddTransient<INutritionistServices, NutritionistServices>();
 builder.Services.AddTransient<IVideoService,VideoService>();
 builder.Services.AddTransient<IVideoReviewServices,VideoReviewServices>();
+builder.Services.AddTransient<IMessageStore,EFMessageStore>();
 
 
 
@@ -117,5 +140,9 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// SignalR
+app.MapHub<ChatHub>("/chatHub");
+// End SignalR
 
 app.Run();

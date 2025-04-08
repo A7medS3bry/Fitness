@@ -38,5 +38,7 @@ namespace FitCore.Models
 
         // 1 : M Trainee and Video
         public ICollection<Video> Videos { get; set; }
+
+
     }
 }
